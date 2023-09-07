@@ -1,0 +1,2425 @@
+
+Class ePOComputer {
+    [System.Int32]    $ParentID
+    [System.String]   $ComputerName
+    [System.String]   $Description
+    [System.String]   $SystemDescription
+    [System.String]   $TimeZone
+    [System.String]   $DefaultLangID
+    [System.String]   $UserName
+    [System.String]   $DomainName
+    [System.String]   $IPHostName
+    [System.String]   $IPV6
+    [System.String]   $IPAddress
+    [System.String]   $IPSubnet
+    [System.String]   $IPSubnetMask
+    [System.String]   $IPV4x
+    [System.String]   $IPXAddress
+    [System.String]   $SubnetAddress
+    [System.String]   $SubnetMask
+    [System.String]   $NetAddress
+    [System.String]   $OSType
+    [System.String]   $OSVersion
+    [System.String]   $OSServicePackVer
+    [System.String]   $OSBuildNum
+    [System.String]   $OSPlatform
+    [System.String]   $OSOEMID
+    [System.String]   $CPUType
+    [System.String]   $CPUSpeed
+    [System.String]   $NumOfCPU
+    [System.String]   $CPUSerialNum
+    [System.Double]   $TotalPhysicalMemory
+    [System.Double]   $FreeMemory
+    [System.Double]   $FreeDiskSpace
+    [System.Double]   $TotalDiskSpace
+    [System.Boolean]  $IsPortable
+    [System.Boolean]  $Vdi
+    [System.String]   $OSBitMode
+    [System.String]   $LastAgentHandler
+    [System.String]   $UserProperty1
+    [System.String]   $UserProperty2
+    [System.String]   $UserProperty3
+    [System.String]   $UserProperty4
+    [System.String]   $UserProperty5
+    [System.String]   $UserProperty6
+    [System.String]   $UserProperty7
+    [System.String]   $UserProperty8
+    [System.String]   $SysvolFreeSpace
+    [System.String]   $SysvolTotalSpace
+    [System.String[]] $Tags
+    [System.String[]] $ExcludedTags
+    [System.DateTime] $LastUpdate
+    [System.Boolean]  $ManagedState
+    [System.Guid]     $AgentGUID
+    [System.Version]  $AgentVersion
+    [System.String]   $AutoID
+}
+Class ePOConfig {
+    [System.String] $Server
+    [System.Management.Automation.PSCredential] $Credentials
+    [System.Int32] $Port
+    [System.Boolean] $AcceptSelfSignedCerts
+}
+Class ePOGroup {
+    [System.String] $Name
+    [System.Int32]  $ID
+
+    ePOGroup([String]$Name, [Int32] $ID) {
+        $This.Name = $Name
+        $This.ID   = $ID
+    }
+}
+Class ePOHelp {
+    [System.String]    $CommandName
+    [System.String[]]  $Parameters
+    [System.String]    $Description
+}
+Class ePOQuery {
+    [System.Int32]      $ID
+    [System.String]     $Name
+    [System.String]     $Description
+    [System.String]     $CreatedBy
+    [System.DateTime]   $CreatedOn
+    [System.String]     $ModifiedBy
+    [System.DateTime]   $ModifiedOn
+    [System.String]     $ConditionSexp
+    [System.String]     $DatabaseType
+    [System.String]     $GroupName
+    [System.String]     $Target
+    [System.String]     $UserName
+}
+Class ePORecoveryKey {
+    [System.String] $ComputerName
+    [System.String] $DriveLetter
+    [System.String] $RecoveryKey
+
+    ePORecoveryKey([System.String] $ComputerName, [System.String] $DriveLetter, [System.String] $RecoveryKey) {
+        $this.ComputerName = $ComputerName
+        $this.DriveLetter = $DriveLetter
+        $this.RecoveryKey = $RecoveryKey
+    }
+}
+Class ePOTable {
+    [System.String]     $Name
+    [System.String]     $Target
+    [System.String]     $Type
+    [System.String]     $DatabaseType
+    [System.String]     $Description
+    [System.String[]]   $RelatedTables
+    [ePOColumn[]]       $Columns
+}
+
+Class ePOColumn {
+    [System.String]     $Name
+    [System.String]     $Type
+    [System.Boolean]    $Select
+    [System.Boolean]    $Condition
+    [System.Boolean]    $GroupBy
+    [System.Boolean]    $Order
+    [System.Boolean]    $Number
+}
+Class ePOTag {
+    [System.String] $Name
+    [System.Int32]  $ID
+    [System.String] $Description
+
+    ePOTag([String] $Name, [Int32] $ID, [String] $Description) {
+        $this.Name = $Name
+        $this.ID = $ID
+        $this.Description = $Description
+    }
+}
+function ConvertTo-ePOComputer {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Position = 0, Mandatory = $True)]
+        [PSCustomObject]
+        $ePOComputer
+    )
+
+    $ePOComputerObject = [ePOComputer]::new()
+
+    $ePOComputerObject.ParentID = $ePOComputer.'EPOComputerProperties.ParentID'
+    $ePOComputerObject.ComputerName = $ePOComputer.'EPOComputerProperties.ComputerName'
+    $ePOComputerObject.Description = $ePOComputer.'EPOComputerProperties.Description'
+    $ePOComputerObject.SystemDescription = $ePOComputer.'EPOComputerProperties.SystemDescription'
+    $ePOComputerObject.TimeZone = $ePOComputer.'EPOComputerProperties.TimeZone'
+    $ePOComputerObject.DefaultLangID = $ePOComputer.'EPOComputerProperties.DefaultLangID'
+    $ePOComputerObject.UserName = $ePOComputer.'EPOComputerProperties.UserName'
+    $ePOComputerObject.DomainName = $ePOComputer.'EPOComputerProperties.DomainName'
+    $ePOComputerObject.IPHostName = $ePOComputer.'EPOComputerProperties.IPHostName'
+    $ePOComputerObject.IPV6 = $ePOComputer.'EPOComputerProperties.IPV6'
+    $ePOComputerObject.IPAddress = $ePOComputer.'EPOComputerProperties.IPAddress'
+    $ePOComputerObject.IPSubnet = $ePOComputer.'EPOComputerProperties.IPSubnet'
+    $ePOComputerObject.IPSubnetMask = $ePOComputer.'EPOComputerProperties.IPSubnetMask'
+    $ePOComputerObject.IPV4x = $ePOComputer.'EPOComputerProperties.IPV4x'
+    $ePOComputerObject.IPXAddress = $ePOComputer.'EPOComputerProperties.IPXAddress'
+    $ePOComputerObject.SubnetAddress = $ePOComputer.'EPOComputerProperties.SubnetAddress'
+    $ePOComputerObject.SubnetMask = $ePOComputer.'EPOComputerProperties.SubnetMask'
+    $ePOComputerObject.NetAddress = $ePOComputer.'EPOComputerProperties.NetAddress'
+    $ePOComputerObject.OSType = $ePOComputer.'EPOComputerProperties.OSType'
+    $ePOComputerObject.OSVersion = $ePOComputer.'EPOComputerProperties.OSVersion'
+    $ePOComputerObject.OSServicePackVer = $ePOComputer.'EPOComputerProperties.OSServicePackVer'
+    $ePOComputerObject.OSBuildNum = $ePOComputer.'EPOComputerProperties.OSBuildNum'
+    $ePOComputerObject.OSPlatform = $ePOComputer.'EPOComputerProperties.OSPlatform'
+    $ePOComputerObject.OSOEMID = $ePOComputer.'EPOComputerProperties.OSOEMID'
+    $ePOComputerObject.CPUType = $ePOComputer.'EPOComputerProperties.CPUType'
+    $ePOComputerObject.CPUSpeed = $ePOComputer.'EPOComputerProperties.CPUSpeed'
+    $ePOComputerObject.NumOfCPU = $ePOComputer.'EPOComputerProperties.NumOfCPU'
+    $ePOComputerObject.CPUSerialNum = $ePOComputer.'EPOComputerProperties.CPUSerialNum'
+    $ePOComputerObject.TotalPhysicalMemory = ([Math]::Round($ePOComputer.'EPOComputerProperties.TotalPhysicalMemory'/1GB))
+    $ePOComputerObject.FreeMemory = ([Math]::Round($ePOComputer.'EPOComputerProperties.FreeMemory'/1GB))
+    $ePOComputerObject.FreeDiskSpace = ([Math]::Round($ePOComputer.'EPOComputerProperties.FreeDiskSpace'/1GB))
+    $ePOComputerObject.TotalDiskSpace = ([Math]::Round($ePOComputer.'EPOComputerProperties.TotalDiskSpace'/1GB))
+    $ePOComputerObject.IsPortable = $ePOComputer.'EPOComputerProperties.IsPortable'
+    $ePOComputerObject.Vdi = $ePOComputer.'EPOComputerProperties.Vdi'
+    $ePOComputerObject.OSBitMode = $ePOComputer.'EPOComputerProperties.OSBitMode'
+    $ePOComputerObject.LastAgentHandler = $ePOComputer.'EPOComputerProperties.LastAgentHandler'
+    $ePOComputerObject.UserProperty1 = $ePOComputer.'EPOComputerProperties.UserProperty1'
+    $ePOComputerObject.UserProperty2 = $ePOComputer.'EPOComputerProperties.UserProperty2'
+    $ePOComputerObject.UserProperty3 = $ePOComputer.'EPOComputerProperties.UserProperty3'
+    $ePOComputerObject.UserProperty4 = $ePOComputer.'EPOComputerProperties.UserProperty4'
+    $ePOComputerObject.UserProperty5 = $ePOComputer.'EPOComputerProperties.UserProperty5'
+    $ePOComputerObject.UserProperty6 = $ePOComputer.'EPOComputerProperties.UserProperty6'
+    $ePOComputerObject.UserProperty7 = $ePOComputer.'EPOComputerProperties.UserProperty7'
+    $ePOComputerObject.UserProperty8 = $ePOComputer.'EPOComputerProperties.UserProperty8'
+    $ePOComputerObject.SysvolFreeSpace = $ePOComputer.'EPOComputerProperties.SysvolFreeSpace'
+    $ePOComputerObject.SysvolTotalSpace = $ePOComputer.'EPOComputerProperties.SysvolTotalSpace'
+    $ePOComputerObject.Tags = ($ePOComputer.'EPOLeafNode.Tags').Split(',').Trim()
+    $ePOComputerObject.ExcludedTags = ($ePOComputer.'EPOLeafNode.ExcludedTags').Split(',').Trim()
+    if ($ePOComputer.'EPOLeafNode.LastUpdate') { $ePOComputerObject.LastUpdate = $ePOComputer.'EPOLeafNode.LastUpdate' }
+    $ePOComputerObject.ManagedState = $ePOComputer.'EPOLeafNode.ManagedState'
+    if ($ePOComputer.'EPOLeafNode.AgentGUID') { $ePOComputerObject.AgentGUID = $ePOComputer.'EPOLeafNode.AgentGUID' }
+    if ($ePOComputer.'EPOLeafNode.AgentVersion') { $ePOComputerObject.AgentVersion = $ePOComputer.'EPOLeafNode.AgentVersion' }
+    $ePOComputerObject.AutoID = $ePOComputer.'EPOBranchNode.AutoID'
+
+    Write-Output $ePOComputerObject
+}
+function ConvertTo-ePOQuery {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Position = 0, Mandatory = $True)]
+        [PSCustomObject]
+        $ePOQuery
+    )
+
+    $ePOQueryObject = [ePOQuery]::new()
+
+    $ePOQueryObject.ID = $ePOQuery.id
+    $ePOQueryObject.Name = $ePOQuery.name
+    $ePOQueryObject.Description = $ePOQuery.description
+    $ePOQueryObject.ConditionSexp = $ePOQuery.conditionSexp
+    $ePOQueryObject.GroupName = $ePOQuery.GroupName
+    $ePOQueryObject.UserName = $ePOQuery.userName
+    $ePOQueryObject.DatabaseType = $ePOQuery.databaseType
+    $ePOQueryObject.CreatedOn = if ($ePOQuery.createdOn) { $ePOQuery.createdOn }
+    $ePOQueryObject.CreatedBy = $ePOQuery.createdBy
+    $ePOQueryObject.ModifiedOn= if ($ePOQuery.modifiedOn) { $ePOQuery.modifiedOn }
+    $ePOQueryObject.ModifiedBy = $ePOQuery.modifiedBy
+
+    Write-Output $ePOQueryObject
+}
+<#
+    .SYNOPSIS
+        Called by Set-ePOServer, this function initializes the script scope variable, ePOwerShell,
+        which is used to communicate with the ePO server
+#>
+
+function Initialize-ePOConfig {
+    [CmdletBinding()]
+    param (
+        <#
+            .PARAMETER Server
+                URL to the ePO server
+        #>
+        [Parameter(Mandatory=$True)]
+        [System.String]
+        $Server,
+
+        <#
+            .PARAMETER Credentials
+                Credentials with access to the ePO server
+        #>
+        [Parameter(Mandatory=$True)]
+        [System.Management.Automation.PSCredential]
+        $Credentials,
+
+        <#
+            .PARAMETER Port
+                Specifies the port necessary to communicate with the ePO server
+        #>
+        [System.Int32]
+        $Port = 8443,
+
+        <#
+            .PARAMETER AllowSelfSignedCerts
+                Allows for self signed certs to be accepted while connecting to the ePO server
+        #>
+        [Switch]
+        $AllowSelfSignedCerts
+    )
+
+    if (-not ($Server.StartsWith('https://'))) {
+        if ($Server.StartsWith('http://')) {
+            Write-Verbose 'Server address starts with HTTP. Changing to HTTPS'
+            $Server = $Server.Replace('http://', 'https://')
+        } else {
+            Write-Verbose 'Server address does not start with HTTPS. Changing...'
+            $Server = 'https://' + $Server
+        }
+
+        Write-Verbose ('Updated server address: {0}' -f $Server)
+    }
+
+    $Script:ePOwerShell = @{
+        Port                 = $Port
+        Server               = $Server
+        Credentials          = $Credentials
+        AllowSelfSignedCerts = $AllowSelfSignedCerts
+    }
+
+    try {
+        [Void] (Get-ePOHelp)
+        Write-Verbose 'Successfully fetched ePOs core.help page'
+    } catch {
+        Remove-Variable ePOwerShell -Scope Script -Force
+        Write-Information $_ -Tags Exception
+        Throw $_
+    }
+}
+<#
+    .SYNOPSIS
+        Builds the request URL to the ePO server, executes the API call, and returns values.
+#>
+
+function Invoke-ePORequest {
+    [CmdletBinding()]
+    [OutputType([PSCustomObject])]
+    param (
+        <#
+            .PARAMETER Name
+                Specifies the function name to be used
+        #>
+        [String]
+        $Name,
+
+        <#
+            .PARAMETER Query
+                Specifies the query parameters to be used against the ePO server
+        #>
+        [Hashtable]
+        $Query = @{}
+    )
+
+    if (-not ($Script:ePOwerShell)) {
+        try {
+            Set-ePOConfig
+        } catch {
+            Throw [System.Management.Automation.ParameterBindingException] 'ePO Server is not configured yet. Run Set-ePOConfig first!'
+        }
+    }
+
+    if (-not ($Query.':output' -eq 'json')) {
+        [Void] $Query.Add(':output', 'json')
+    }
+
+    $URL = '{0}:{1}/remote/{2}' -f $ePOwerShell.Server, $ePOwerShell.Port, $Name
+
+    [System.Collections.ArrayList] $QueryString = @()
+
+    foreach ($Item in $Query.GetEnumerator()) {
+        [Void] $QueryString.Add("$($Item.Name)=$($Item.Value)")
+    }
+
+    $RequestUrl = ('{0}?{1}' -f $Url, ($QueryString -join '&'))
+
+    Write-Verbose ('Request URL: {0}' -f $RequestUrl)
+
+    if (-not ([Net.ServicePointManager]::SecurityProtocol -eq 'Tls12')) {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor
+            [Net.SecurityProtocolType]::Tls12
+    }
+
+    $InvokeWebRequest = @{
+        Uri             = $RequestUrl
+        Credential      = $ePOwerShell.Credentials
+        UseBasicParsing = $True
+        ErrorAction     = 'Stop'
+    }
+
+    if ($Script:ePOwerShell.AllowSelfSignedCerts) {
+        if ($PSVersionTable.PSVersion.Major -le 5) {
+            Write-Verbose 'PSVersion is -le 5'
+            Write-Debug 'Allowing self signed certs'
+
+Add-Type @"
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+public class TrustAllCertsPolicy : ICertificatePolicy {
+    public bool CheckValidationResult(
+        ServicePoint srvPoint, X509Certificate certificate,
+        WebRequest request, int certificateProblem) {
+        return true;
+    }
+}
+"@
+            [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+        } else {
+            Write-Verbose 'PSVersion is -gt 5'
+            [Void] $InvokeWebRequest.Add('SkipCertificateCheck', $True)
+        }
+    }
+
+    Write-Verbose ('Request: {0}' -f ($InvokeWebRequest | ConvertTo-Json))
+
+    try {
+        $Response = Invoke-WebRequest @InvokeWebRequest
+    } catch {
+        Write-Information $_ -Tags Exception
+        Throw $_
+    }
+
+    Write-Debug "Response: $($Response | Out-String)"
+
+    if (-not ($Response.Content.StartsWith('OK:'))) {
+        Throw $Response
+    }
+
+    Write-Output ($Response.Content.Substring(3).Trim() | ConvertFrom-Json)
+}
+<#
+    .SYNOPSIS
+        Write the WHERE portion of the ePO custom query.
+ 
+    .DESCRIPTION
+        Write the WHERE portion of the ePO custom query returning the string that's ready to be sent to ePO.
+ 
+    .EXAMPLE
+        ```powershell
+        $where = @{
+            and = @{
+                eq = @{
+                    EPOLeafNodeId = 1234
+                    ComputerName = 'CAS-12345'
+                }
+            }
+        }
+        Write-ePOWhere $where
+        ```
+ 
+        Output:
+        ```
+        (and (eq ComputerName CAS-12345) (eq EPOLeafNodeId 1234))
+        ```
+ 
+    .EXAMPLE
+        ```powershell
+        $where = @{
+            or = @{
+                eq = @{
+                    EPOLeafNodeId = 1234
+                    ComputerName = 'CAS-12345'
+                }
+                ne = @{
+                    EPOLeafNodeId = 4321
+                }
+            }
+        }
+        Write-ePOWhere $where
+        ```
+ 
+        Output:
+        ```
+        (or (eq ComputerName CAS-12345) (eq EPOLeafNodeId 1234) (ne EPOLeafNodeId 4321))
+        ```
+ 
+    .EXAMPLE
+        ```powershell
+        $where = @{
+            eq = @{
+                EPOLeafNodeId = 1234
+            }
+        }
+        Write-ePOWhere $where
+        ```
+ 
+        Output:
+        ```
+        (where (eq EPOLeafNodeId 1234))
+        ```
+#>
+function Write-ePOWhere {
+    [CmdletBinding()]
+    param(
+        <#
+            .PARAMETER WherePart
+                A hashtable of the structure of the WHERE clause. See examples.
+        #>
+        [Parameter(Mandatory = $true)]
+        [hashtable]
+        $WherePart,
+
+        <#
+            .PARAMETER Parent
+                This is really just called when re-calling this function from within itself.
+                You probably shouldn't pass this parameter manually.
+        #>
+        [Parameter()]
+        [string]
+        $Parent
+    )
+
+    foreach ($Part in $WherePart.GetEnumerator()) {
+        if ($Part.Value -is [hashtable]) {
+            if (@('and', 'or') -contains $Part.Name) {
+                $Return += ' ({0} {1})' -f $Part.Name, (Write-ePOWhere $Part.Value -Parent $Part.Name)
+            } else {
+                $Return += ' {0}' -f (Write-ePOWhere $Part.Value -Parent $Part.Name)
+            }
+        } else {
+            $Value = $Part.Value
+            $Return += ' ({0} {1} "{2}")' -f $Parent, $Part.Name, $Value
+        }
+    }
+
+    while ($Return.Contains(' ')) {
+        $Return = $Return.Replace(' ', ' ')
+    }
+    $Return = $Return.Trim()
+
+    if ((-not $Parent) -and ($Return.StartsWith('(eq') -or $Return.StartsWith('(ne'))) {
+        $Return = '(where {0})' -f $Return
+    }
+
+    Write-Output $Return
+}
+<#
+    .SYNOPSIS
+        Finds available computer systems on the ePO server
+ 
+    .DESCRIPTION
+        Finds all available computer systems from the ePO server. If a computer system name is specifed, it searches for only
+        the one computer system from the server. If a computer system is not specified, then it will return a list of all
+        available computer systems on the ePO server. You can search for a computer using the Agent Guid, Computer Name,
+        MAC Address, IP Address, Tags, and Usernames.
+ 
+    .EXAMPLE
+        $Computer = Get-ePOComputer -All
+ 
+        Returns all computers in the ePO system
+ 
+    .EXAMPLE
+        $Computer = Get-ePOComputer -ComputerName 'Computer1'
+ 
+        Returns ePO computer object searching by hostname
+ 
+    .EXAMPLE
+        $Computer = Get-ePOComputer -ComputerName 'Computer*' -ForceWildcardHandling
+ 
+        Returns ePO computer object searching by hostname with wildcard
+ 
+    .EXAMPLE
+        $Computer = Get-ePOComputer -AgentGuid 5b273b72-977b-4566-9cb4-9af816ac222b
+ 
+        Returns ePO computer object searching by Agent Guid
+ 
+    .EXAMPLE
+        $Computer = Get-ePOComputer -MacAddress 00-05-9A-3C-7A-00
+ 
+        Returns ePO computer object searching by MAC Address
+ 
+    .EXAMPLE
+        $Computer = Get-ePOComputer -IPAddress 192.168.32.46
+ 
+        Returns ePO computer object searching by IP Address
+ 
+    .EXAMPLE
+        $Computer = Get-ePOComputer -Username MyUsername
+ 
+        Returns ePO computer object searching by Username
+ 
+    .EXAMPLE
+        $Computer = Get-ePOComputer -Tag ePOTag1
+ 
+        Returns ePO computer objects searching by Tag
+ 
+    .PARAMETER AgentGuid
+        Specifies the computers Agent Guid to be found on the ePO server
+ 
+    .PARAMETER Computer
+        Specifies a computer system to be found on the ePO server
+ 
+    .PARAMETER ForceWildcardHandling
+        Allows for wildcards to be used when searching by computer name
+ 
+    .PARAMETER MACAddress
+        Specifies the computers MAC Address to be found on the ePO server
+ 
+    .PARAMETER IPAddress
+        Specifies the computers IPAddress to be found on the ePO server
+ 
+    .PARAMETER Tag
+        Specifies the tag a computer might have applied to be found on the ePO server
+ 
+    .PARAMETER Username
+        Specifies the computers Username to be found on the ePO server
+ 
+    .PARAMETER All
+        Returns all computers in the ePO server
+#>
+
+function Get-ePOComputer {
+    [CmdletBinding(DefaultParameterSetName = 'All')]
+    [Alias('Find-ePOwerShellComputerSystem', 'Find-ePOComputerSystem')]
+    [OutputType([System.Object[]])]
+    param (
+        [Parameter(ParameterSetName = 'AgentGuid')]
+        $AgentGuid,
+
+        [Parameter(ParameterSetName = 'ComputerName', Position = 1, ValueFromPipeline = $True)]
+        [Alias('hostname', 'name', 'computername')]
+        $Computer,
+
+        [Parameter(ParameterSetName = 'ComputerName')]
+        [Switch]
+        $ForceWildcardHandling,
+
+        [Parameter(ParameterSetName = 'MACAddress')]
+        $MACAddress,
+
+        [Parameter(ParameterSetName = 'IPAddress')]
+        $IPAddress,
+
+        [Parameter(ParameterSetName = 'Tag')]
+        $Tag,
+
+        [Parameter(ParameterSetName = 'Username')]
+        $Username,
+
+        [Parameter(ParameterSetName = 'All')]
+        [Switch]
+        $All
+    )
+
+    begin {
+        try {
+            $Request = @{
+                Name  = 'system.find'
+                Query = @{
+                    searchText = ''
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    process {
+        try {
+            switch ($PSCmdlet.ParameterSetName) {
+                "ComputerName" {
+                    foreach ($Comp in $Computer) {
+                        Write-Debug ('Searching by computer name for: {0}' -f $Comp)
+                        if ($Comp -is [ePOComputer]) {
+                            Write-Verbose 'Using ePOComputer object'
+                            Write-Output $Comp
+                        } else {
+                            if ($ForceWildcardHandling) {
+                                if (-not ($script:AllePOComputers)) {
+                                    $Request.Query.searchText = ''
+                                    $script:AllePOComputers = Invoke-ePORequest @Request
+                                }
+
+                                foreach ($ePOComputer in $script:AllePOComputers) {
+                                    if ($ePOComputer.'EPOComputerProperties.ComputerName' -like $Comp) {
+                                        $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
+                                        Write-Output $ePOComputerObject
+                                    }
+                                }
+                            } else {
+                                $Request.Query.searchText = $Comp
+                                $ePOComputers = Invoke-ePORequest @Request
+
+                                foreach ($ePOComputer in $ePOComputers) {
+                                    if ($ePOComputer.'EPOComputerProperties.ComputerName' -eq $Comp) {
+                                        $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
+                                        Write-Output $ePOComputerObject
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                "MACAddress" {
+                    foreach ($Address in $MACAddress) {
+                        $Address = $Address.ToUpper()
+
+                        switch -Regex ($Address) {
+                            '^([0-9a-f]{2}:){5}([0-9a-f]{2})$' {
+                                Write-Verbose 'Delimiter: Colons'
+                                $Address = $Address.Replace(':', '')
+                                break
+                            }
+
+                            '^([0-9a-f]{2}-){5}([0-9a-f]{2})$' {
+                                Write-Verbose 'Delimiter: Dashs'
+                                $Address = $Address.Replace('-', '')
+                                break
+                            }
+
+                            '^([0-9a-f]{2}\.){5}([0-9a-f]{2})$' {
+                                Write-Verbose 'Delimiter: Periods'
+                                $Address = $Address.Replace('.', '')
+                                break
+                            }
+
+                            '^([0-9a-f]{2}\s){5}([0-9a-f]{2})$' {
+                                Write-Verbose 'Delimiter: Spaces'
+                                $Address = $Address.Replace(' ', '')
+                                break
+                            }
+
+                            '^([0-9a-f]{12})$' {
+                                Write-Verbose 'Delimiter: None'
+                                break
+                            }
+
+                            default {
+                                Write-Error ('MAC Address does not match known format: {0}' -f $Address)
+                                continue
+                            }
+                        }
+
+                        $Request.Query.searchText = $Address
+                        $ePOComputers = Invoke-ePORequest @Request
+
+                        foreach ($ePOComputer in $ePOComputers) {
+                            $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
+                            Write-Output $ePOComputerObject
+                        }
+                    }
+                }
+
+                "IPAddress" {
+                    foreach ($Address in $IPAddress) {
+                        $Request.Query.searchText = $Address
+                        $ePOComputers = Invoke-ePORequest @Request
+
+                        foreach ($ePOComputer in $ePOComputers) {
+                            $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
+                            Write-Output $ePOComputerObject
+                        }
+                    }
+                }
+
+                "Tag" {
+                    foreach ($T in $Tag) {
+                        if ($T -is [ePOTag]) {
+                            $Request.Query.searchText = $T.Name
+                        } else {
+                            $Request.Query.searchText = $T
+                        }
+                        $ePOComputers = Invoke-ePORequest @Request
+
+                        foreach ($ePOComputer in $ePOComputers) {
+                            $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
+                            Write-Output $ePOComputerObject
+                        }
+                    }
+                }
+
+                "AgentGuid" {
+                    foreach ($Guid in $AgentGuid) {
+                        $Request.Query.searchText = $Guid
+                        $ePOComputers = Invoke-ePORequest @Request
+
+                        foreach ($ePOComputer in $ePOComputers) {
+                            $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
+                            Write-Output $ePOComputerObject
+                        }
+                    }
+                }
+
+                "Username" {
+                    foreach ($User in $Username) {
+                        $Request.Query.searchText = $User
+                        $ePOComputers = Invoke-ePORequest @Request
+
+                        foreach ($ePOComputer in $ePOComputers) {
+                            $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
+                            Write-Output $ePOComputerObject
+                        }
+                    }
+                }
+
+                "All" {
+                    $Request.Query.searchText = ''
+                    $ePOComputers = Invoke-ePORequest @Request
+
+                    foreach ($ePOComputer in $ePOComputers) {
+                        $ePOComputerObject = ConvertTo-ePOComputer $ePOComputer
+                        Write-Output $ePOComputerObject
+                    }
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+        }
+    }
+
+    end {
+        if (Get-Variable 'AllePOComputers' -Scope Script -ErrorAction SilentlyContinue) {
+            Remove-Variable -Name 'AllePOComputers' -Scope Script
+        }
+    }
+}
+
+Export-ModuleMember -Function 'Get-ePOComputer' -Alias 'Find-ePOwerShellComputerSystem', 'Find-ePOComputerSystem'
+<#
+    .SYNOPSIS
+        Returns saved $ePOwerShell settings
+ 
+    .DESCRIPTION
+        Returns an ePOConfig object of the saved information necessary to communicate with the ePO server
+ 
+    .EXAMPLE
+        $Config = Get-ePOConfig
+ 
+        Returns the currently set configuration for connecting to the ePO server.
+#>
+
+function Get-ePOConfig {
+    [CmdletBinding()]
+    [OutputType([Hashtable])]
+    [Alias('Get-ePOwerShellServer', 'Get-ePOServer')]
+    param ()
+
+    process {
+        try {
+            if (-not ($Script:ePOwerShell)) {
+                Write-Error 'ePO Server is not configured yet. Run Set-ePOConfig first' -ErrorAction Stop
+            }
+
+            Write-Output $Script:ePOwerShell
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+}
+
+Export-ModuleMember 'Get-ePOConfig' -Alias 'Get-ePOwerShellServer', 'Get-ePOServer'
+<#
+    .SYNOPSIS
+        Finds available groups on the ePO server
+ 
+    .DESCRIPTION
+        Finds all available groups from the ePO server as an ePOGroup object. If a group name is specifed,
+        it searches for only the one group from the server. If a group is not specified, then it will
+        return a list of all available groups on the ePO server.
+ 
+    .EXAMPLE
+        $Groups = Get-ePOGroup
+ 
+        Returns array of ePOGroup objects containing group information
+ 
+    .EXAMPLE
+        $Groups = Get-ePOGroup 'Group1'
+ 
+        Returns array of ePOGroup objects containing requested group information with matching group name
+ 
+    .EXAMPLE
+        $Groups = Get-ePOGroup 'Group*' -ForceWildcardHandling
+ 
+        Returns array of ePOGroup objects containing requested group information with matching group name by wildcard
+ 
+    .PARAMETER Group
+        Specifies a group name to be found on the ePO server. This parameter can be provider by either:
+ 
+            * an ePOGroup object
+            * a group name
+ 
+        This parameter can be passed in from the pipeline.
+ 
+    .PARAMETER ForceWildcardHandling
+        Allows for wildcards to be used when searching by group name
+#>
+
+function Get-ePOGroup {
+    [CmdletBinding()]
+    [Alias('Find-ePOwerShellGroups','Find-ePOGroups')]
+    [OutputType([System.Object[]])]
+    param (
+        [Parameter(Position = 0, ValueFromPipeline = $True)]
+        [Alias('GroupName')]
+        $Group = '',
+
+        [Switch]
+        $ForceWildcardHandling
+    )
+
+    begin {}
+
+    process {
+        try {
+            if ($Group -is [ePOGroup]) {
+                Write-Output $Group
+            } else {
+                $Request = @{
+                    Name  = 'system.findGroups'
+                    Query = @{
+                        searchText = $Group
+                    }
+                }
+
+                Write-Debug "Request: $($Request | ConvertTo-Json)"
+                $ePOGroups = Invoke-ePORequest @Request
+
+                foreach ($ePOGroup in $ePOGroups) {
+                    $GroupObject = [ePOGroup]::new($ePOGroup.groupPath, $ePOGroup.groupId)
+                    Write-Output $GroupObject
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function Get-ePOGroup -Alias 'Find-ePOwerShellGroups','Find-ePOGroups'
+<#
+    .SYNOPSIS
+        Returns members of a specified ePO group
+ 
+    .DESCRIPTION
+        This function returns an array of ePOComputer objects for each computer in the specified ePO group. If the `$Recurse`
+        parameter is specified, then all subgroups are included in the search as well.
+ 
+    .EXAMPLE
+        $GroupMembers = Get-ePOGroupMember -Group $Group
+ 
+        Get group members of a single group
+ 
+    .EXAMPLE
+        $GroupMembers = Get-ePOGroup -Group 'Group1' | Get-ePOGroupMember
+ 
+        Get group members from a pipeline
+ 
+    .EXAMPLE
+        $GroupMembers = Get-ePOGroup -Group 'Group1' | Get-ePOGroupMember -Recurse
+ 
+        Recursively get group members from a pipeline
+ 
+    .PARAMETER Group
+        Specifies the group we want to search for group members. This parameter can be provided as either:
+ 
+            * An ePOGroup object
+            * A group name
+ 
+        This parameter can be passed in from the pipeline
+ 
+    .PARAMETER Recurse
+        Include members in all subgroups
+#>
+
+function Get-ePOGroupMember {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0, ValueFromPipeline = $True, Mandatory = $True)]
+        $Group,
+
+        [Switch]
+        $Recurse
+    )
+
+    begin {
+        if ($Group) {
+            $Group = $Group.Split(',').Trim()
+        }
+    }
+
+    process {
+        try {
+            foreach ($GroupItem in $Group) {
+                $Request = @{
+                    Name  = 'epogroup.findSystems'
+                    Query = @{}
+                }
+
+                if ($GroupItem -is [ePOGroup]) {
+                    [Void] $Request.Query.Add('groupId', $GroupItem.ID)
+                } else {
+                    [Void] $Request.Query.Add('groupId', $GroupItem)
+                }
+
+                if ($Recurse) {
+                    [Void] $Request.Query.Add('searchSubgroups', 'true')
+                }
+
+                Write-Debug "Request: $($Request | ConvertTo-Json)"
+                $ePOGroupMembers = Invoke-ePORequest @Request
+
+                foreach ($ePOGroupMember in $ePOGroupMembers) {
+                    $ePOGroupMemberObject = ConvertTo-ePOComputer $ePOGroupMember
+                    Write-Output $ePOGroupMemberObject
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Get-ePOGroupMember'
+<#
+    .SYNOPSIS
+        Fetchs and returns the content from ePOs core.help menu.
+ 
+    .DESCRIPTION
+        Fetches all commands from the ePOs core.help menu. If a command is specified, the function will
+        only return a single command. Each command is converted to an ePOHelp object containing 3 values:
+ 
+            * Command
+            * Parameters
+            * Description
+ 
+        The function will then return an array containing all ePOHelp objects.
+ 
+    .EXAMPLE
+        $Help = Get-ePOHelp
+ 
+        Get all help objects on the ePO servers core.help page.
+ 
+    .EXAMPLE
+        $FindHelp = Get-ePOHelp -Command 'system.find'
+ 
+        Get a single help object from the ePO servers core.help page.
+ 
+    .PARAMETER Command
+        Specifies a command the be queried from the ePO server
+#>
+
+function Get-ePOHelp {
+    [CmdletBinding()]
+    [Alias('Get-ePOwerShellCoreHelp', 'Get-ePOCoreHelp')]
+    param (
+        [Parameter(Position = 0, ValueFromPipeline = $True)]
+        $Command
+    )
+
+    begin {
+        try {
+            $Request = @{
+                Name = 'core.help'
+            }
+
+            if ($Command) {
+                $Request.Add('Query', @{})
+                if ($Command -is [ePOHelp]) {
+                    $Request.Query.Add('Command', $Command.CommandName)
+                } else {
+                    $Request.Query.Add('Command', $Command)
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    process {
+        try {
+            $Response = Invoke-ePORequest @Request
+
+            foreach ($Item in $Response) {
+                $HelpObject = [ePOHelp]::new()
+                $Item = $Item -replace '\r\n', ' '
+
+                $FirstRegexProduct = [Regex]::Match($Item, '^(\S+)\s(.*)$')
+                $HelpObject.CommandName = $FirstRegexProduct.Groups[1].Value
+                $Remainder = $FirstRegexProduct.Groups[2].Value
+
+                if ($Remainder -match '^\-.*') {
+                    $Remainder = $Remainder.TrimStart('- ')
+                }
+
+                if ($Remainder -match '\s\-\s') {
+                    $SecondRegexProduct = [Regex]::Match($Remainder, '(^\S+.{0,})\s\-\s(\S+.{0,})$')
+
+                    $HelpObject.Parameters = ($SecondRegexProduct.Groups[1].Value -Split ' ').Trim('[').Trim(']')
+                    $HelpObject.Description = $SecondRegexProduct.Groups[2].Value
+                } else {
+                    $HelpObject.Description = $Remainder
+                }
+
+                Write-Output $HelpObject
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Get-ePOHelp' -Alias 'Get-ePOwerShellCoreHelp', 'Get-ePOCoreHelp'
+<#
+    .SYNOPSIS
+        Finds available predefined queries on the ePO server.
+ 
+    .DESCRIPTION
+        Finds all available queries from the ePO server. Each query is then converted to an ePOQuery object,
+        and an array containing all objects will be returned.
+ 
+    .EXAMPLE
+        $Queries = Get-ePOQuery
+ 
+        Get all predefined queries in ePO
+#>
+
+function Get-ePOQuery {
+    [CmdletBinding()]
+    [Alias('Get-ePOwerShellQueries', 'Get-ePOQueries')]
+    param ()
+
+    begin {
+        try {
+            $Request = @{
+                Name  = 'core.listQueries'
+                Query = @{}
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    process {
+        try {
+            Write-Verbose "Request: $($Request | ConvertTo-Json)"
+            if (-not ($ePOQueries = Invoke-ePORequest @Request)) {
+                Throw "Failed to find any ePO queries"
+            }
+
+            foreach ($ePOQuery in $ePOQueries) {
+                $ePOQueryObject = ConvertTo-ePOQuery $ePOQuery
+                Write-Output $ePOQueryObject
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Get-ePOQuery' -Alias 'Get-ePOwerShellQueries', 'Get-ePOQueries'
+<#
+    .SYNOPSIS
+        Returns the MNE Recovery Key for specified encrypted systems
+ 
+    .DESCRIPTION
+        For the provided computer(s), this will query the ePO servers to find all of the encrypted volumes.
+        For each volume, it collects the mount point and the volume serial number stored in ePO. For each of
+        the encrypted volumes, it queries for a recovery key. The problem with only querying against the ePO
+        Leaf Node ID is that it only returns a recovery key for the systems boot volume. If the system has
+        additional mounted drives that are also encrypted, it does not return these keys.
+ 
+        This function outputs an array of ePORecoveryKey objects containing the computer name, mount point,
+        and recovery key.
+ 
+    .EXAMPLE
+        $RecoveyKey = Get-ePORecoveryKey -Computer 'My-ComputerName'
+ 
+        Fetch the recovery key for a system
+ 
+    .PARAMETER Computer
+        Specifies the computer we're finding the recovery key for. Can be provided as:
+ 
+            * An ePOComputer object
+            * A computer name
+ 
+        This parameter can be passed in from the pipeline.
+#>
+
+function Get-ePORecoveryKey {
+    [CmdletBinding(DefaultParameterSetName = 'Computer')]
+    [Alias('Get-ePOwerShellMneRecoveryKey', 'Get-ePOMneRecoveryKey')]
+    [OutputType([System.Object[]])]
+    param (
+        [Parameter(ParameterSetName = 'Computer', Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
+        [Alias('ComputerName', 'Name')]
+        $Computer,
+
+        [Parameter(ParameterSetName = 'AgentGuid', Mandatory = $True)]
+        $AgentGuid
+    )
+
+    begin {
+        try {
+            $Request = @{
+                Name        = 'mne.recoverMachine'
+                Query       = @{
+                    serialNumber = ''
+                }
+                ErrorAction = 'Stop'
+            }
+
+            if ($Computer) {
+                $Computer = $Computer.Split(',').Trim()
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    process {
+        try {
+            switch ($PSCmdlet.ParameterSetName) {
+                'Computer' {
+                    foreach ($Comp in $Computer) {
+                        if ($Comp -is [ePOComputer]) {
+                            Write-Verbose 'Computer is an ePOComputer object'
+                            $CompResponse = $Comp
+                        } else {
+                            Write-Verbose 'Computer is not an ePOComputer object. Searching for...'
+                            $CompResponse = Get-ePOComputer -Computer $Comp -ErrorAction Stop
+                        }
+
+                        foreach ($Item in $CompResponse) {
+                            Write-Verbose ('Detecting mount points for {0}' -f $Item.ComputerName)
+                            $QueryRequest = @{
+                                Table       = 'MneVolumes'
+                                Select      = @(
+                                    'MneFvRecoveryKeys.DisplayName',
+                                    'MneVolumes.MountPoint'
+                                )
+                                Where       = @{
+                                    eq = @{
+                                        'MneVolumes.EPOLeafNodeId' = $Item.ParentID
+                                    }
+                                }
+                                ErrorAction = 'Stop'
+                            }
+
+                            Write-Debug ('Mount point query request: {0}' -f ($QueryRequest | ConvertTo-Json))
+
+                            $MountPoints = Invoke-ePOQuery @QueryRequest
+
+                            if ($MountPoints.Count -eq 0) {
+                                Write-Warning ('Failed to find mount points for {0}, Parent ID {1}' -f $Item.ComputerName, $Item.ParentID)
+                                continue
+                            }
+
+                            Write-Debug ('Mount points: {0}' -f ($MountPoints -join ', '))
+
+                            foreach ($MountPoint in $MountPoints) {
+                                Write-Verbose ('Getting recovery key for mount point: {0}' -f $MountPoint.'MneFvRecoveryKeys.DisplayName')
+                                $Request.Query.serialNumber = $MountPoint.'MneFvRecoveryKeys.DisplayName'
+
+                                $RecoveryKey = Invoke-ePORequest @Request
+                                $RecoveryKeyObject = [ePORecoveryKey]::new($Item.ComputerName, $MountPoint.'MneVolumes.MountPoint', $RecoveryKey)
+                                Write-Output $RecoveryKeyObject
+                            }
+                        }
+                    }
+                }
+
+                'AgentGuid' {
+                    foreach ($Guid in $AgentGuid) {
+                        Write-Verbose ('Checking for system via Agent Guid: {0}' -f $Guid)
+
+                        if (-not ($CompResponse = Get-ePOComputer -AgentGuid $Guid)) {
+                            Write-Error ('Failed to find system via Agent Guid')
+                            continue
+                        }
+
+                        Write-Verbose ('Detecting mount points for {0}' -f $CompResponse.ComputerName)
+
+                        $QueryRequest = @{
+                            Table       = 'MneVolumes'
+                            Select      = @(
+                                'MneFvRecoveryKeys.DisplayName',
+                                'MneVolumes.MountPoint'
+                            )
+                            Where       = @{
+                                eq = @{
+                                    'MneVolumes.EPOLeafNodeId' = $CompResponse.ParentID
+                                }
+                            }
+                            ErrorAction = 'Stop'
+                        }
+
+                        Write-Debug ('Mount point query request: {0}' -f ($QueryRequest | ConvertTo-Json))
+
+                        $MountPoints = Invoke-ePOQuery @QueryRequest
+
+                        if ($MountPoints.Count -eq 0) {
+                            Write-Warning ('Failed to find mount points for {0}, Parent ID {1}' -f $CompResponse.ComputerName, $Item.ParentID)
+                            continue
+                        }
+
+                        Write-Debug ('Mount points: {0}' -f ($MountPoints -join ', '))
+
+                        foreach ($MountPoint in $MountPoints) {
+                            Write-Verbose ('Getting recovery key for mount point: {0}' -f $MountPoint.'MneFvRecoveryKeys.DisplayName')
+                            $Request.Query.serialNumber = $MountPoint.'MneFvRecoveryKeys.DisplayName'
+
+                            $RecoveryKey = Invoke-ePORequest @Request
+                            $RecoveryKeyObject = [ePORecoveryKey]::new($Item.ComputerName, $MountPoint.'MneVolumes.MountPoint', $RecoveryKey)
+                            Write-Output $RecoveryKeyObject
+                        }
+                    }
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Get-ePORecoveryKey' -Alias 'Get-ePOwerShellMneRecoveryKey', 'Get-ePOMneRecoveryKey'
+<#
+.SYNOPSIS
+    Finds available tables in the ePO database
+ 
+.DESCRIPTION
+    Finds all available tables from the ePO database. Number of tables accessable may depend on your security permissions.
+ 
+.EXAMPLE
+    $Tables = Get-ePOTable
+ 
+    Gets all available tables
+#>
+
+function Get-ePOTable {
+    [CmdletBinding()]
+    [OutputType([System.Object[]])]
+    param ()
+
+    begin {
+        try {
+            $Request = @{
+                Name  = 'core.listTables'
+                Query = @{}
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    process {
+        try {
+            Write-Verbose "Request: $($Request | ConvertTo-Json)"
+            if (-not ($ePOTables = Invoke-ePORequest @Request)) {
+                Write-Error "Failed to find any ePO queries"
+            }
+
+            foreach ($ePOTable in $ePOTables) {
+                Write-Output $ePOTable
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Get-ePOTable'
+<#
+    .SYNOPSIS
+        Finds available tags on the ePO server
+ 
+    .DESCRIPTION
+        Finds all available tags from the ePO server. If a tag name is specifed, it searches for only
+        the one tag from the server. If a tag is not specified, then it will return an array of ePOTag
+        objects from the ePO server. Each tag contains an ID, Name, and Description.
+ 
+    .EXAMPLE
+        $Tags = Get-ePOTag
+ 
+        Get all tags from the ePO server
+ 
+    .EXAMPLE
+        $Tag = Get-ePOTag 'Tag1'
+ 
+        Get a single tag from the ePO server
+ 
+    .PARAMETER Tag
+        This parameter is used to request a specific tag. This can be provided as:
+ 
+            * An ePOTag object
+            * A tag name
+ 
+        This value can be passed in from the pipeline.
+#>
+
+function Get-ePOTag {
+    [CmdletBinding()]
+    [Alias('Find-ePOwerShellTag','Find-ePOTag')]
+    [OutputType([System.Object[]])]
+    param (
+        [Parameter(Position = 0, ValueFromPipeline = $True)]
+        [Alias('TagName')]
+        $Tag = ''
+    )
+
+    begin {}
+
+    process {
+        try {
+            if ($Tag -is [ePOTag]) {
+                Write-Verbose 'Using pipelined ePOTag object'
+                Write-Output $Tag
+            } else {
+                Write-Verbose 'Either not pipelined, or pipeline object is not an ePOTag object'
+                $Request = @{
+                    Name  = 'system.findTag'
+                    Query = @{
+                        searchText = $Tag
+                    }
+                }
+
+                Write-Debug "Request: $($Request | ConvertTo-Json)"
+                $ePOTags = Invoke-ePORequest @Request
+
+                foreach ($ePOTag in $ePOTags) {
+                    if (-not ($Tag) -or ($Tag -eq $ePOTag.tagName)) {
+                        $TagObject = [ePOTag]::new($ePOTag.tagName, $ePOTag.tagId, $ePOTag.tagNotes)
+                        Write-Output $TagObject
+                    }
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Get-ePOTag' -Alias 'Find-ePOwerShellTag','Find-ePOTag'
+<#
+    .SYNOPSIS
+        Returns the ePO version
+ 
+    .DESCRIPTION
+        Returns the version number of the McAfee ePO server
+ 
+    .EXAMPLE
+        Get-ePOVersion
+ 
+        Returns the ePO version number
+ 
+    .INPUTS
+        None
+ 
+    .OUTPUTS
+        `[System.Version]`
+#>
+
+function Get-ePOVersion {
+    [CmdletBinding()]
+    [OutputType([System.Version])]
+    param ()
+
+    begin {}
+    process {
+        try {
+            $Request = @{
+                Name = 'epo.getVersion'
+            }
+
+            Write-Debug "Request: $($Request | ConvertTo-Json)"
+            if (-not ($Response = Invoke-ePORequest @Request)) {
+                Throw 'Failed to determine ePO version'
+            }
+
+            Write-Output ($Response -as [System.Version])
+        } catch {
+            Write-Information $_ -Tags Exception
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Get-ePOVersion'
+<#
+    .SYNOPSIS
+        Either runs a predefined query or a custom query against the ePO server
+ 
+    .DESCRIPTION
+        Based off the Query Name or ID, runs the query and returns the output.
+ 
+    .EXAMPLE
+        $Query = Get-ePOQuery
+        $Query = $Query | Where-Object { $_.Name -eq 'My Awesome Query' }
+        $Results = Invoke-ePOQuery -Query $Query
+ 
+        Run a predefined query saved on the ePO server
+ 
+    .PARAMETER Query
+        Specifies a predefined query that is stored on the ePO server. Can be provided by:
+ 
+            * An ePOQuery object
+            * A query ID
+            * A query Name
+ 
+        This parameter can be passed in from the pipeline.
+ 
+    .PARAMETER Table
+        Specifies the table on the ePO server you would like to query against. Run Get-ePOTable to see available tables and values.
+ 
+    .PARAMETER Select
+        Specifies the items from tables you're specifically looking for. If a table name is not specified in your select string, then `$Table` is prepended to the beginning of your select item.
+ 
+    .PARAMETER Where
+        A hashtable used to limit the query to items meeting only specific criteria
+ 
+    .PARAMETER Database
+        Optional parameter. Specifies a separate database to query, other than the default one.
+ 
+    .OUTPUTS
+        `[System.Object[]]`
+#>
+
+function Invoke-ePOQuery {
+    [CmdletBinding()]
+    [Alias('Invoke-ePOwerShellQuery')]
+    param (
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True, ParameterSetName = 'PremadeQuery')]
+        $Query,
+
+        [Parameter(Mandatory = $True, ParameterSetName = 'CustomQuery')]
+        [System.String]
+        $Table,
+
+        [Parameter(Mandatory = $True, ParameterSetName = 'CustomQuery')]
+        [System.String[]]
+        $Select,
+
+        [Parameter(Mandatory = $True, ParameterSetName = 'CustomQuery')]
+        [HashTable]
+        $Where,
+
+        [Parameter(ParameterSetName = 'CustomQuery')]
+        [Parameter(ParameterSetName = 'PremadeQuery')]
+        [System.String]
+        $Database
+    )
+
+    begin {
+        try {
+            switch ($PSCmdlet.ParameterSetName) {
+                'PremadeQuery' {
+                    $Request = @{
+                        Name  = 'core.executeQuery'
+                        Query = @{
+                            queryId = ''
+                        }
+                    }
+                }
+
+                'CustomQuery' {
+                    $Request = @{
+                        Name  = 'core.executeQuery'
+                        Query = @{
+                            target = $Table
+                        }
+                    }
+                }
+
+                Default {
+                    Write-Error 'Failed to determine parameter set' -ErrorAction Stop
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    process {
+        try {
+            switch ($PSCmdlet.ParameterSetName) {
+                'PremadeQuery' {
+                    foreach ($QueryItem in $Query) {
+                        Write-Debug 'Using a premade query'
+                        if ($QueryItem -is [ePOQuery]) {
+                            Write-Debug 'ePOQuery object specified'
+                            $Request.Query.queryId = $QueryItem.ID
+                        } elseif ($QueryItem -is [Int32]) {
+                            Write-Debug 'Query ID specified'
+                            $Request.Query.queryId = $QueryItem
+                        } else {
+                            Write-Debug 'Query Name specified'
+
+                            if (-not ($ePOQuery = Get-ePOQuery | Where-Object { $_.name -eq $QueryItem })) {
+                                Write-Error ('Failed to find a query for: {0}' -f $QueryItem) -ErrorAction Stop
+                            }
+
+                            $Request.Query.queryId = $ePOQuery.ID
+                        }
+
+                        if ($Database) {
+                            [Void] $Request.Query.Add('database', $Database)
+                        }
+
+                        Write-Debug "Request: $($Request | ConvertTo-Json)"
+                        if (-not ($QueryResults = Invoke-ePORequest @Request)) {
+                            Throw "Failed to find any ePO query results"
+                        }
+
+                        Write-Debug "Results: $($QueryResults | Out-String)"
+                        Write-Output $QueryResults
+                    }
+                }
+
+                'CustomQuery' {
+                    $Select = foreach ($Item in $Select) {
+                        if ($Item -Match '^(\S+\.){1,}\S+$') {
+                            $Item
+                        } else {
+                            $Table + '.' + $Item
+                        }
+                    }
+
+                    $Select = '(select ' + ($Select -Join ' ') + ')'
+                    [Void] $Request.Query.Add('select', $Select)
+
+                    if ($Where) {
+                        $WhereString = Write-ePOWhere $Where
+                        Write-Debug ('Where String: {0}' -f $WhereString)
+                        [Void] $Request.Query.Add('where', $WhereString)
+                    }
+
+                    Write-Debug "Request: $($Request | ConvertTo-Json)"
+                    if (-not ($QueryResults = Invoke-ePORequest @Request)) {
+                        Throw "Failed to find any ePO query results"
+                    }
+
+                    Write-Debug "Results: $($QueryResults | Out-String)"
+                    Write-Output $QueryResults
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Invoke-ePOQuery' -Alias 'Invoke-ePOwerShellQuery'
+<#
+    .SYNOPSIS
+        Wakes up the ePO Agent on specified computer
+ 
+    .DESCRIPTION
+        For each specified computer, the ePO server attempts to wake up the computer's agent and run
+        policy updates.
+ 
+    .PARAMETER Computer
+        Specifies the computer(s) to waking up. Can be provided as:
+ 
+            * An ePOComputer object
+            * A computer name
+ 
+        This parameter can be passed in from the pipeline.
+ 
+    .PARAMETER ForceFullPolicyUpdate
+        Updates the agent with all polices and properties
+ 
+    .PARAMETER FullProps
+        Full properties will be sent by Agent.
+ 
+    .PARAMETER SuperAgent
+        Allows you to use a SuperAgent to broadcast wakeup calls to other agents.
+ 
+    .PARAMETER AbortAfter
+        Specifies total number of minutes it should wait for an agent to respond before it considers the attempt a failure.
+ 
+    .PARAMETER RetryIntervalSeconds
+        Specifies how long it should wait between attempts if the previous attempt to wake up an agent failed.
+ 
+    .PARAMETER NumberOfAttempts
+        Specifies how many times the ePO server should attempt to wake up the agent before it deems it a failure.
+ 
+    .PARAMETER RandomMinutes
+        Specifies number of minutes to randomise the wakeup calls
+#>
+
+function Invoke-ePOWakeUpAgent {
+    [CmdletBinding(DefaultParameterSetName = 'Computer')]
+    [Alias('Invoke-ePOwerShellWakeUpAgent')]
+    param (
+        [Parameter(ParameterSetName = 'Computer', Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
+        [Alias('ComputerName')]
+        $Computer,
+
+        [Parameter(ParameterSetName = 'AgentGuid', Mandatory = $True)]
+        $AgentGuid,
+
+        [Switch]
+        $ForceFullPolicyUpdate,
+
+        [Switch]
+        $FullProps,
+
+        [Switch]
+        $SuperAgent,
+
+        [int32]
+        $AbortAfter = 5,
+
+        [int32]
+        $RetryIntervalSeconds = 30,
+
+        [int32]
+        $NumberOfAttempts = 1,
+
+        [int32]
+        $RandomMinutes = 0
+    )
+
+    begin {}
+
+    process {
+        try {
+            switch ($PSCmdlet.ParameterSetName) {
+                'Computer' {
+                    foreach ($Comp in $Computer) {
+                        if ($Comp -is [ePOComputer]) {
+                            Write-Verbose "Computer was pipelined with an ePOComputer object"
+                            $ePOComputer = $Comp
+                        } else {
+                            Write-Verbose "Confirming computer is in ePO: $Comp"
+
+                            if (-not ($ePOComputer = Get-ePOComputer -Computer $Comp)) {
+                                Write-Error ("Failed to find computer system '{0}' in ePO" -f $Comp) -ErrorAction Stop
+                                continue
+                            }
+                        }
+
+                        Write-Verbose ('Found computer system in ePO: {0}' -f ($ePOComputer | Out-String))
+
+                        if (-not ($ePOComputer.ManagedState)) {
+                            Write-Error ('Computer System is not in a managed state: {0}' -f $Comp) -ErrorAction Stop
+                            continue
+                        }
+
+                        Write-Verbose ('Computer System is in a managed state: {0}' -f $Comp)
+
+                        $Request = @{
+                            Name  = 'system.wakeupAgent'
+                            Query = @{
+                                names                 = $ePOComputer.ComputerName
+                                fullProps             = $FullProps
+                                forceFullPolicyUpdate = $ForceFullPolicyUpdate
+                                abortAfterMinutes     = $AbortAfter
+                                retryIntervalSeconds  = $RetryIntervalSeconds
+                                attempts              = $NumberOfAttempts
+                                randomMinutes         = $RandomMinutes
+                                superAgent            = $SuperAgent
+                            }
+                        }
+
+                        Write-Verbose "Request: $($Request | ConvertTo-Json)"
+                        $Response = Invoke-ePORequest @Request
+
+                        $Results = @{}
+                        foreach ($Item in (($Response | ConvertTo-Json).Split('\n').Replace('"', ''))) {
+                            if ($Item) {
+                                $ItemName = ($Item.Split(':')[0].Trim())
+                                $ItemResults = ([Boolean]($Item.Split(':')[1].Trim() -as [Int]))
+                                $Results.Add($ItemName, $ItemResults)
+                            }
+                        }
+
+                        if ($Results.Completed) {
+                            Write-Verbose ('Successfully woke up {0}' -f $ePOComputer.ComputerName)
+                        } elseif ($Results.Failed) {
+                            Throw ('Failed to wake up {0}' -f $ePOComputer.ComputerName)
+                        } elseif ($Results.Expired) {
+                            Throw ('Failed to wake up {0}. Session expired.' -f $ePOComputer.ComputerName)
+                        } else {
+                            Throw ('Failed to wake up {0}. Unknown error' -f $ePOComputer.ComputerName)
+                        }
+                    }
+                }
+
+                'AgentGuid' {
+                    foreach ($Guid in $AgentGuid) {
+                        if (-not ($ePOComputer = Get-ePOComputer -AgentGuid $Guid)) {
+                            Write-Error ('Failed to find system via Agent Guid: {0}' -f $Guid)
+                            continue
+                        }
+
+                        Write-Verbose ('Found computer system in ePO: {0}' -f ($ePOComputer | Out-String))
+
+                        if (-not ($ePOComputer.ManagedState)) {
+                            Write-Error ('Computer System is not in a managed state: {0}' -f $Comp) -ErrorAction Stop
+                            continue
+                        }
+
+                        Write-Verbose ('Computer System is in a managed state: {0}' -f $Comp)
+
+                        $Request = @{
+                            Name  = 'system.wakeupAgent'
+                            Query = @{
+                                names                 = $ePOComputer.ComputerName
+                                fullProps             = $FullProps
+                                forceFullPolicyUpdate = $ForceFullPolicyUpdate
+                                abortAfterMinutes     = $AbortAfter
+                                retryIntervalSeconds  = $RetryIntervalSeconds
+                                attempts              = $NumberOfAttempts
+                                randomMinutes         = $RandomMinutes
+                                superAgent            = $SuperAgent
+                            }
+                        }
+
+                        Write-Verbose "Request: $($Request | ConvertTo-Json)"
+                        $Response = Invoke-ePORequest @Request
+
+                        $Results = @{}
+                        foreach ($Item in (($Response | ConvertTo-Json).Split('\n').Replace('"', ''))) {
+                            if ($Item) {
+                                $ItemName = ($Item.Split(':')[0].Trim())
+                                $ItemResults = ([Boolean]($Item.Split(':')[1].Trim() -as [Int]))
+                                $Results.Add($ItemName, $ItemResults)
+                            }
+                        }
+
+                        if ($Results.Completed) {
+                            Write-Verbose ('Successfully woke up {0}' -f $ePOComputer.ComputerName)
+                        } elseif ($Results.Failed) {
+                            Throw ('Failed to wake up {0}' -f $ePOComputer.ComputerName)
+                        } elseif ($Results.Expired) {
+                            Throw ('Failed to wake up {0}. Session expired.' -f $ePOComputer.ComputerName)
+                        } else {
+                            Throw ('Failed to wake up {0}. Unknown error' -f $ePOComputer.ComputerName)
+                        }
+                    }
+                }
+            }
+        } catch {
+            Write-Error $_
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Invoke-ePOWakeUpAgent' -Alias 'Invoke-ePOwerShellWakeUpAgent'
+<#
+    .SYNOPSIS
+        Removes computers managed in ePO
+ 
+    .DESCRIPTION
+        Using the supplied ComputerName(s), we can remove the computer specified from ePO
+ 
+    .EXAMPLE
+        Remove-ePOComputer -Computer $Computer
+ 
+        Remove a single tag on a single computer
+ 
+    .EXAMPLE
+        Remove-ePOComputer -Computer @(Computer1, Computer2)
+ 
+        Remove one tag on two computers
+ 
+    .EXAMPLE
+        Get-ePOComputer My-Computer123 | Remove-ePOComputer
+ 
+        Remove a single computer through the pipeline
+ 
+    .PARAMETER Computer
+        Specifies the name of the computer managed by ePO to be removed. This can be provided by:
+ 
+            * An ePOComputer object
+            * A computer name
+ 
+        This parameter can be provided through the pipeline
+ 
+    .OUTPUTS
+        None
+#>
+
+function Remove-ePOComputer {
+    [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = "High", DefaultParameterSetName = 'Computer')]
+    param (
+        [Parameter(Mandatory = $True, ParameterSetName = 'Computer', Position = 0, ValueFromPipeline = $True)]
+        [Alias('ComputerName', 'cn', 'Name')]
+        $Computer,
+
+        [Parameter(Mandatory = $True, ParameterSetName = 'AgentGuid')]
+        $AgentGuid
+    )
+
+    begin {
+        try {
+            $Request = @{
+                Name  = 'system.delete'
+                Query = @{
+                    ids = ''
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    process {
+        try {
+            switch ($PSCmdlet.ParameterSetName) {
+                'Computer' {
+                    foreach ($Comp in $Computer) {
+                        if ($Comp -is [ePOComputer]) {
+                            Write-Debug ('Specified computer is an ePOComputer: -f {0}' -f $Comp)
+                        } else {
+                            Write-Debug ('Specified computer is a string: -f {0}' -f $Comp)
+                            $Comp = Get-ePOComputer $Comp
+                        }
+
+                        foreach ($C in $Comp) {
+                            Write-Verbose ('Computer Name: {0}' -f $C.ComputerName)
+                            Write-Verbose ('Computer ID: {0}' -f $C.ParentID)
+
+                            $Request.Query.ids = $C.ParentID
+                            if ($PSCmdlet.ShouldProcess("Remove ePO computer: $($C.ComputerName)")) {
+                                $Result = Invoke-ePORequest @Request
+
+                                if ($Result -eq 0) {
+                                    Write-Verbose ('Deleted computer: {0}' -f $C.ComputerName)
+                                } else {
+                                    Throw ('Unknown response while deleting computer {0} from ePO: {1}' -f $C.ComputerName, $Result)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                'AgentGuid' {
+                    foreach ($Guid in $AgentGuid) {
+                        if (-not ($Comp = Get-ePOComputer -AgentGuid $Guid)) {
+                            Write-Error ('Failed to find system via Agent Guid: {0}' -f $Guid)
+                            continue
+                        }
+
+                        foreach ($C in $Comp) {
+                            Write-Verbose ('Computer Name: {0}' -f $C.ComputerName)
+                            Write-Verbose ('Computer ID: {0}' -f $C.ParentID)
+
+                            $Request.Query.ids = $C.ParentID
+                            if ($PSCmdlet.ShouldProcess("Remove ePO computer: $($C.ComputerName)")) {
+                                $Result = Invoke-ePORequest @Request
+
+                                if ($Result -eq 0) {
+                                    Write-Verbose ('Deleted computer: {0}' -f $C.ComputerName)
+                                } else {
+                                    Throw ('Unknown response while deleting computer {0} from ePO: {1}' -f $C.ComputerName, $Result)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch {
+            Write-Error $_
+        }
+    }
+}
+<#
+    .SYNOPSIS
+        Removes tags from computers managed in ePO
+ 
+    .DESCRIPTION
+        Using the supplied ComputerName(s) and TagName(s), we can remove the tag to the computers
+        specified. Tags or Computers can be passed in through the pipeline, but not both at the same time.
+ 
+    .EXAMPLE
+        Remove-ePOTag -Computer $Computer -Tag $Tag
+ 
+        Remove a single tag on a single computer
+ 
+    .EXAMPLE
+        Remove-ePOTag -Computer @(Computer1, Computer2) -Tag Tag1
+ 
+        Remove one tag on two computers
+ 
+    .EXAMPLE
+        Remove-ePOTag Computer1 @(Tag1, Tag2)
+ 
+        Remove two tags to a single computer
+ 
+    .PARAMETER Computer
+        Specifies the name of the computer managed by ePO to have a tag applied to it. This can be provided by:
+ 
+            * An ePOComputer object
+            * A computer name
+ 
+        This parameter can be provided through the pipeline
+ 
+    .PARAMETER Tag
+        Specifies the name of the tag to be applied. This can be provided by:
+ 
+            * An ePOTag object
+            * A tag name
+ 
+        This parameter can be provided through the pipeline
+ 
+    .OUTPUTS
+        None
+#>
+
+function Remove-ePOTag {
+    [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = "High")]
+    [Alias('Clear-ePOwerShellTag', 'Clear-ePOTag')]
+    param (
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
+        [Alias('ComputerName', 'cn', 'Name')]
+        $Computer,
+
+        [Parameter(Mandatory = $True, Position = 1, ValueFromPipeline = $True)]
+        [Alias('Tag')]
+        $TagName
+    )
+
+    begin {
+        try {
+            $Request = @{
+                Name  = 'system.clearTag'
+                Query = @{
+                    names   = ''
+                    tagName = ''
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    process {
+        try {
+            foreach ($Comp in $Computer) {
+                foreach ($Tag in $TagName) {
+                    if ($Comp -is [ePOComputer]) {
+                        $Request.Query.names = $Comp.ComputerName
+                    } elseif ($Comp -is [ePOTag]) {
+                        $Request.Query.tagName = $Comp.Name
+                    } else {
+                        $Request.Query.names = $Comp
+                    }
+
+                    if ($Tag -is [ePOTag]) {
+                        $Request.Query.tagName = $Tag.Name
+                    } elseif ($T -is [ePOComputer]) {
+                        $Request.Query.names = $Tag.ComputerName
+                    } else {
+                        $Request.Query.tagName = $Tag
+                    }
+
+                    Write-Verbose ('Computer Name: {0}' -f $Request.Query.names)
+                    Write-Verbose ('Tag Name: {0}' -f $Request.Query.tagName)
+
+                    if ($PSCmdlet.ShouldProcess("Remove ePO tag $($Request.Query.tagName) from $($Request.Query.names)")) {
+                        $Result = Invoke-ePORequest @Request
+
+                        if ($Result -eq 0) {
+                            Write-Verbose ('Tag [{0}] is already cleared from computer {1}' -f $Tag, $Comp)
+                        } elseif ($Result -eq 1) {
+                            Write-Verbose ('Successfully cleared tag [{0}] to computer {1}' -f $Tag, $Comp)
+                        } else {
+                            Write-Error ('Unknown response while clearing tag [{0}] from {1}: {2}' -f $Tag, $Comp, $Result)
+                        }
+                    }
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Remove-ePOTag' -Alias 'Clear-ePOwerShellTag', 'Clear-ePOTag'
+<#
+    .SYNOPSIS
+        Saves the stored ePOwerShell settings to your environment for future use.
+ 
+    .DESCRIPTION
+        Rather than typing in your credentials to ePOwerShell anytime you open your shell, you can store
+        the current configuration as a json object in your user environment for for future use. This does
+        require `Set-ePOConfig` to be run first.
+ 
+    .EXAMPLE
+        PS > Save-ePOConfig
+ 
+        Save ePOwerShell settings in your user environment.
+ 
+    .NOTES
+        Requires Set-ePOConfig to be run first.
+#>
+
+function Save-ePOConfig {
+    [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = "High")]
+    param ()
+
+    try {
+        if (-not ($script:ePOwerShell)) {
+            Throw "`$ePOwerShell is not currently set. Run `Set-ePOConfig` first and try again."
+        }
+
+        $Save = @{
+            Server               = $script:ePOwerShell.Server
+            Port                 = $script:ePOwerShell.Port
+            Username             = $script:ePOwerShell.Credentials.Username
+            Password             = ($script:ePOwerShell.Credentials.Password | ConvertFrom-SecureString)
+            AllowSelfSignedCerts = $script:ePOwerShell.AllowSelfSignedCerts
+        }
+
+        if ($PSCmdlet.ShouldProcess("Saving ePOwerShell configurations")) {
+            [Environment]::SetEnvironmentVariable("ePOwerShell", ($Save | ConvertTo-Json -Compress), "User")
+        }
+    } catch {
+        Write-Information $_ -Tags Exception
+    }
+}
+
+Export-ModuleMember -Function 'Save-ePOConfig'
+<#
+    .SYNOPSIS
+        Required command. Sets the necessary parameters to successfully communicate with an ePO server
+ 
+    .DESCRIPTION
+        This function sets up all information necessary to communicate with your ePO server.
+ 
+        There are three ways to utilize this command: By manually specifying the variables each time you
+        load the module, saving a json file on your computer with the necessary information, or saving the
+        json as an environment variable, $env:ePOwerShell.
+ 
+    .EXAMPLE
+        Set-ePOConfig -Server 'My-ePO-Server.domain.com' -Port 1234 -Credentials (Get-Credential) -AllowSelfSignedCerts
+ 
+        Set ePO config
+ 
+    .PARAMETER Server
+        URL to the ePO server
+ 
+    .PARAMETER Credentials
+        Credentials with access to the ePO server
+ 
+    .PARAMETER Port
+        Specifies the port necessary to communicate with the ePO server
+ 
+    .PARAMETER AllowSelfSignedCerts
+        Specifies if you'd like to allow ePOwerShell to allow self signed certificates on the ePO server
+ 
+    .PARAMETER ePOwerShellSettings
+        Specifies a path to a json containing all information necessary to connect to an ePO server
+ 
+    .OUTPUTS
+        None
+#>
+
+function Set-ePOConfig {
+    [CmdletBinding(DefaultParameterSetName = 'Env', SupportsShouldProcess = $True)]
+    [Alias('Set-ePOServer')]
+    param (
+        [Parameter(Mandatory = $True, ParameterSetName = 'ManualEntry')]
+        [String]
+        $Server,
+
+        [Parameter(Mandatory = $True, ParameterSetName = 'ManualEntry')]
+        [System.Management.Automation.PSCredential]
+        $Credentials,
+
+        [Parameter(Mandatory = $False, ParameterSetName = 'ManualEntry')]
+        [Int]
+        $Port,
+
+        [Switch]
+        $AllowSelfSignedCerts = ($Script:ePOwerShell.AllowSelfSignedCerts),
+
+        [Parameter(ParameterSetName = 'Env')]
+        [String]
+        $ePOwerShellSettings = (${env:ePOwerShell})
+    )
+
+    Write-Debug "PSCmdlet.ParameterSetName: $($PSCmdlet.ParameterSetName)"
+    Write-Debug "ePOwerShellSettings: $ePOwerShellSettings"
+    if (
+        (-not ($PSCmdLet.ParameterSetName -Contains 'ManualEntry')) -and
+        (-not ($ePOwerShellSettings))
+    ) {
+        Throw "Unable to set ePOwerShell server information. Either set '`$env:ePOwerShell', or re-run the command and specify all necessary information"
+    }
+    Write-Debug "Found something"
+
+    switch ($PSCmdLet.ParameterSetName) {
+        'Env' {
+            if (Test-Path $ePOwerShellSettings) {
+                Write-Debug "This is a filepath too a json"
+                Write-Debug "FilePath: $ePOwerShellSettings"
+                try {
+                    $Settings = Get-Content $ePOwerShellSettings | Out-String | ConvertFrom-Json
+                } catch {
+                    Throw "Failed to import existing Json: $($_.Exception)"
+                }
+            } else {
+                Write-Debug "This is a stored json in env"
+                try {
+                    $Settings = $ePOwerShellSettings | ConvertFrom-Json
+                } catch {
+                    Throw "Failed to import existing Json: $($_.Exception)"
+                }
+            }
+
+            Write-Debug "Settings: $($Settings | Out-String)"
+
+            $GetCredentials = @{
+                TypeName     = 'System.Management.Automation.PSCredential'
+                ArgumentList = @(
+                    $Settings.Username,
+                    ($Settings.Password | ConvertTo-SecureString)
+                )
+            }
+
+            $Credentials = New-Object @GetCredentials
+
+            $ePOwerShellVariables = @{
+                Server               = $Settings.Server
+                Credentials          = $Credentials
+                AllowSelfSignedCerts = $Settings.AllowSelfSignedCerts.IsPresent
+            }
+
+            if ($settings.Port) {
+                [void]$ePOwerShellVariables.Add("Port", $Settings.Port)
+            }
+        }
+        'ManualEntry' {
+            $ePOwerShellVariables = @{
+                Server               = $Server
+                Credentials          = $Credentials
+                AllowSelfSignedCerts = $AllowSelfSignedCerts
+            }
+
+            if ($Port) {
+                [void]$ePOwerShellVariables.Add("Port", $Port)
+            }
+        }
+    }
+
+    Write-Debug "Variables: $($ePOwerShellVariables | Out-String)"
+
+    if ($PSCmdlet.ShouldProcess("Settings ePOwerShell configurations successfully")) {
+        Initialize-ePOConfig @ePOwerShellVariables
+    }
+}
+
+Export-ModuleMember -Function 'Set-ePOConfig' -Alias 'Set-ePOServer'
+<#
+    .SYNOPSIS
+        Applies tags to computers managed in ePO
+ 
+    .DESCRIPTION
+        Using the supplied ComputerName(s) and TagName(s), we can apply the tag to the computers
+        specified. Tags or Computers can be passed in through the pipeline, but not both at the same time.
+ 
+    .EXAMPLE
+        Set-ePOTag -Computer $Computer -Tag $Tag
+ 
+        Set a single tag on a single computer
+ 
+    .EXAMPLE
+        Set-ePOTag @(Computer1, Computer2) Tag1
+ 
+        Set one tag on two computers
+ 
+    .EXAMPLE
+        Set-ePOTag Computer1 @(Tag1, Tag2)
+ 
+        Set two tags to a single computer:
+ 
+    .PARAMETER ComputerName
+        Specifies the name of the computer managed by ePO to have a tag applied to it. This can be provided by:
+ 
+            * An ePOComputer object
+            * A computer name
+ 
+        This parameter can be provided through the pipeline
+ 
+    .PARAMETER Tag
+        Specifies the name of the tag to be applied. This can be provided by:
+ 
+            * An ePOTag object
+            * A tag name
+ 
+        This parameter can be provided through the pipeline
+ 
+    .OUTPUTS
+        None
+#>
+
+function Set-ePOTag {
+    [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = "Medium")]
+    [Alias('Set-ePOwerShellTag')]
+    param (
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
+        [Alias('Computer', 'cn')]
+        $ComputerName,
+
+        [Parameter(Mandatory = $True, Position = 1, ValueFromPipeline = $True)]
+        [Alias('Tag')]
+        $TagName
+    )
+
+    begin {
+        try {
+            $Request = @{
+                Name  = 'system.applyTag'
+                Query = @{
+                    names   = ''
+                    tagName = ''
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    process {
+        try {
+            foreach ($Computer in $ComputerName) {
+                foreach ($Tag in $TagName) {
+                    if ($Computer -is [ePOComputer]) {
+                        $Request.Query.names = $Computer.ComputerName
+                    } elseif ($Computer -is [ePOTag]) {
+                        $Request.Query.tagName = $Computer.Name
+                    } else {
+                        $Request.Query.names = $Computer
+                    }
+
+                    if ($Tag -is [ePOTag]) {
+                        $Request.Query.tagName = $Tag.Name
+                    } elseif ($Tag -is [ePOComputer]) {
+                        $Request.Query.names = $Tag.ComputerName
+                    } else {
+                        $Request.Query.tagName = $Tag
+                    }
+
+                    Write-Verbose ('Computer Name: {0}' -f $Request.Query.names)
+                    Write-Verbose ('Tag Name: {0}' -f $Request.Query.tagName)
+
+                    if ($PSCmdlet.ShouldProcess("Set ePO tag $($Request.Query.tagName) from $($Request.Query.names)")) {
+                        $Result = Invoke-ePORequest @Request
+
+                        if ($Result -eq 0) {
+                            Write-Verbose ('Tag [{0}] is already cleared from computer {1}' -f $Tag, $Computer)
+                        } elseif ($Result -eq 1) {
+                            Write-Verbose ('Successfully cleared tag [{0}] to computer {1}' -f $Tag, $Computer)
+                        } else {
+                            Write-Error ('Unknown response while clearing tag [{0}] from {1}: {2}' -f $Tag, $Computer, $Result) -ErrorAction Stop
+                        }
+                    }
+                }
+            }
+        } catch {
+            Write-Information $_ -Tags Exception
+            Throw $_
+        }
+    }
+
+    end {}
+}
+
+Export-ModuleMember -Function 'Set-ePOTag' -Alias 'Set-ePOwerShellTag'
+<#
+    .SYNOPSIS
+        Updates ePOwerShell config options individually, rather than setting everything at once.
+ 
+    .DESCRIPTION
+        This function sets up all information necessary to communicate with your ePO server.
+ 
+        There are three ways to utilize this command: By manually specifying the variables each time you
+        load the module, saving a json file on your computer with the necessary information, or saving the
+        json as an environment variable, $env:ePOwerShell.
+ 
+    .EXAMPLE
+        Update-ePOwerShellServer -Server 'My-ePO-Server.domain.com'
+ 
+        Update ePOwerShell to target a new server
+ 
+    .PARAMETER Server
+        URL to the ePO server
+ 
+    .PARAMETER Port
+        Specifies the port necessary to communicate with the ePO server
+ 
+    .PARAMETER Credentials
+        Credentials with access to the ePO server
+ 
+    .PARAMETER AllowSelfSignedCerts
+        Specifies if you'd like to allow ePOwerShell to allow self signed certificates on the ePO server
+ 
+    .OUTPUTS
+        None
+#>
+
+function Update-ePOConfig {
+    [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = "Low")]
+    [Alias('Update-ePOwerShellServer', 'Update-ePOServer')]
+    param (
+        [System.String]
+        $Server = ($Script:ePOwerShell.Server),
+
+        [System.Int32]
+        $Port = ($Script:ePOwerShell.Port),
+
+        [System.Management.Automation.PSCredential]
+        $Credentials = ($Script:ePOwerShell.Credentials),
+
+        [Switch]
+        $AllowSelfSignedCerts = ($Script:ePOwerShell.AllowSelfSignedCerts)
+    )
+
+    if (-not ($script:ePOwerShell)) {
+        Throw "Unable to set ePOwerShell server information. Either set '`$env:ePOwerShell', or run Set-ePOwerShellServer and specify all necessary information"
+    }
+
+    $ePOwerShellVariables = @{
+        Server               = $Server
+        Port                 = $Port
+        Credentials          = $Credentials
+        AllowSelfSignedCerts = $AllowSelfSignedCerts
+    }
+
+    Write-Debug "Variables: $($ePOwerShellVariables | Out-String)"
+
+    if ($PSCmdlet.ShouldProcess("Updating ePOwerShell configurations")) {
+        Initialize-ePOConfig @ePOwerShellVariables
+    }
+}
+
+Export-ModuleMember -Function 'Update-ePOConfig' -Alias 'Update-ePOwerShellServer', 'Update-ePOServer'
